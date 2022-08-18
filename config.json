@@ -1,0 +1,26 @@
+{
+  "version": "slws",
+  "protocol": [
+    {
+      "type": "http",
+
+      "service": [
+        {
+          "type": "server",
+          "listen": 8080,
+          "read_timeout": 5000
+        }
+      ]
+    },
+    {
+      "type": "http",
+      "service": [
+        {
+          "type": "server",
+          "listen": 8081,
+          "read_timeout": 5000
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Socket"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/root/project/simpleLinuxWebServer/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/root/project/simpleLinuxWebServer/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/root/project/simpleLinuxWebServer/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Socket">
+				<Option output="/root/project/simpleLinuxWebServer/cmake-build-debug/Socket" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/root/project/simpleLinuxWebServer/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/root/project/simpleLinuxWebServer/common"/>
+					<Add directory="/root/project/simpleLinuxWebServer/lib"/>
+					<Add directory="/root/project/simpleLinuxWebServer/stl"/>
+					<Add directory="/root/project/simpleLinuxWebServer/core"/>
+					<Add directory="/root/project/simpleLinuxWebServer/protocol/http"/>
+					<Add directory="/root/project/simpleLinuxWebServer/auto"/>
+					<Add directory="/root/project/simpleLinuxWebServer/test"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 Socket"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Socket/fast">
+				<Option output="/root/project/simpleLinuxWebServer/cmake-build-debug/Socket" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/root/project/simpleLinuxWebServer/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/root/project/simpleLinuxWebServer/common"/>
+					<Add directory="/root/project/simpleLinuxWebServer/lib"/>
+					<Add directory="/root/project/simpleLinuxWebServer/stl"/>
+					<Add directory="/root/project/simpleLinuxWebServer/core"/>
+					<Add directory="/root/project/simpleLinuxWebServer/protocol/http"/>
+					<Add directory="/root/project/simpleLinuxWebServer/auto"/>
+					<Add directory="/root/project/simpleLinuxWebServer/test"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 Socket/fast"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/root/project/simpleLinuxWebServer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/root/project/simpleLinuxWebServer/auto/auto.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/auto/auto.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/clock.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/clock.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/config.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/config.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/module.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/module.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/timer.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/common/timer.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/connection_module.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/connection_module.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/cycle_module.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/cycle_module.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/epoll_module.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/epoll_module.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/event_module.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/event_module.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/listening_module.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/core/listening_module.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/lib/cJSON.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/lib/cJSON.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/lib/lib.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/lib/lib.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/main.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/protocol/http/self_httpd.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/protocol/http/self_httpd.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/stl/list.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/stl/list.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/stl/queue.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/stl/queue.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/stl/rbtree.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/stl/rbtree.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/test/test.c">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/test/test.h">
+			<Option target="Socket"/>
+		</Unit>
+		<Unit filename="/root/project/simpleLinuxWebServer/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

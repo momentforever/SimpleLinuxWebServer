@@ -5,27 +5,31 @@
 #ifndef SOCKET_CONFIG_H
 #define SOCKET_CONFIG_H
 
-#include "global.h"
+#include "lib.h"
+#include "stl.h"
 
-typedef struct config_s config_t;
-
-typedef void (*config_handler_pt)();
-
-struct config_s{
-    int port;
-    //char* server_name;
-    int timeout;
-    config_handler_pt read_handler;//location
-    config_handler_pt write_handler;//location
+typedef struct config_node_s config_node_t;
+struct config_node_s{
+    // 0 - 3 MAIN - ROUTE
+    int part;
+    //
+    int type;
+    config_node_t* parent;
+    list_t *sons;
+    void** data;
 };
 
-config_t* creat_config();
 
+typedef struct config_s config_t;
+struct config_s{
+    char* str;
+    void* fmt; //cJSON*`
+    //char type[8];
 
-#define config_init(c) \
-    (c)->port = ALL; \
-    (c)->timeout = ETERNITY; \
-    (c)->read_handler = NULL; \
-    (c)->write_handler = NULL;
+    //main
+    config_node_t *root;
+};
+
+config_t* config_create();
 
 #endif //SOCKET_CONFIG_H

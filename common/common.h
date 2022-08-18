@@ -6,10 +6,8 @@
 #define SOCKET_COMMON_H
 
 #include "config.h"
-#include "connection.h"
-#include "core.h"
-#include "cycle.h"
-#include "event.h"
-#include "listening.h"
+#include "clock.h"
+#include "timer.h"
+#include "module.h"
 
 #endif //SOCKET_COMMON_H
