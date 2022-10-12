@@ -27,13 +27,13 @@ add_executable(Socket
 
         common/clock.c
         common/timer.c
+        common/memory.c
 
         common/config.c
         common/module.c
 
         core/cycle_module.c
         core/event_module.c
-        core/connection_module.c
         core/listening_module.c
         core/epoll_module.c
 

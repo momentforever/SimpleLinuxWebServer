@@ -5,5 +5,5 @@
 
 int g_epoll_fd = -1;
 
-timer_rbtree_t *g_timer_tree;
+timer_rbtree_t *g_event_timer_tree;
 cycle_t *g_cycle;

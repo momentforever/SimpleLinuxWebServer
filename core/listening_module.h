@@ -9,12 +9,11 @@
 #include "common.h"
 #include "stl.h"
 
-typedef struct listening_s listening_t;
 
 struct listening_s{
     int fd;
     int fd_type;
-    int type;
+    unsigned int type;
     // format address
     // char* serv_addr_str;
     int port;
@@ -23,10 +22,11 @@ struct listening_s{
     struct sockaddr* serv_addr;
     // int serv_addr_size;
 
-    void* handler;//do udp/tcp/http create connection
+    connection_handler_pt handler;//do udp/tcp/http create connection
+
     unsigned listen:1;
 };
 
-list_t* listenings_create(config_node_t *config);
+list_t* listenings_create(config_t *c);
 
 #endif //SOCKET_LISTENING_MODULE_H

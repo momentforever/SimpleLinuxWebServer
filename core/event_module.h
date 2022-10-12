@@ -8,8 +8,6 @@
 #include "lib.h"
 #include "common.h"
 
-typedef struct connection_s connection_t;
-
 typedef struct event_s event_t;
 typedef void (*event_handler_pt)(event_t *ev);
 
@@ -22,10 +20,9 @@ struct event_s{
     unsigned ready:1;
     unsigned error:1;
     unsigned eof:1;
+    unsigned accept:1;
 
     event_handler_pt handler;
-    //timer
-    timer_node_t timer;
 };
 
 event_t* event_init(event_t *ev,unsigned rw,event_handler_pt handler,time_t ms);

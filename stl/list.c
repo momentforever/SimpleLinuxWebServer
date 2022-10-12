@@ -11,31 +11,22 @@
 list_t *list_create(size_t value_size){
     list_t *list;
     list = malloc(sizeof(list_t));
-    if(list == NULL){
-        return NULL;
-    }
-    list->value_size = value_size;
-    list->end = NULL;
-    list->begin = NULL;
-    list->size = 0;
+    if(list == NULL)return NULL;
+    list_init(list,value_size);
     return list;
 }
 
 list_node_t *list_node_push(list_t *list){
     list_node_t *node;
     node = malloc(sizeof(list_node_t));
-    if(node == NULL){
-        return NULL;
-    }
+    if(node == NULL)return NULL;
     node->next = NULL;
 
     node->value = malloc(list->value_size);
-    if(node->value == NULL){
-        return NULL;
-    }
+    if(node->value == NULL)return NULL;
     memset(node->value,0,sizeof(list->value_size));
 
-    if(list->begin==NULL){
+    if(list->size==0){
         list->begin = node;
         list->end = node;
     }else{
@@ -77,7 +68,6 @@ list_node_t *list_node_insert(list_t *list,void *before_data){
     }
 
     list->size += 1;
-
     return node;
 }
 
@@ -116,6 +106,10 @@ void list_node_delete(list_t *list,list_node_t *node){
     free(node);
 }
 
+void list_delete_void(void *list){
+    list_delete((list_t*)list);
+}
+
 void list_delete(list_t *list){
     if(list->size == 0){
         free(list);
@@ -134,23 +128,23 @@ void list_delete(list_t *list){
     free(list);
 }
 
-void list_demo(){
-    list_t *l = list_create(sizeof(int));
-
-    list_node_t *n;
-    int* i;
-    n = list_node_push(l);
-
-    i = n->value;
-    *i = 10;
-
-    list_is_empty(l);
-    list_size(l);
-
-    n = list_node_insert(l,n);
-    *i = 15;
-
-    list_node_delete(l,n);
-
-    list_delete(l);
-}
+//void list_demo(){
+//    list_t *l = list_create(sizeof(int));
+//
+//    list_node_t *n;
+//    int* i;
+//    n = list_node_push(l);
+//
+//    i = n->value;
+//    *i = 10;
+//
+//    list_is_empty(l);
+//    list_size(l);
+//
+//    n = list_node_insert(l,n);
+//    *i = 15;
+//
+//    list_node_delete(l,n);
+//
+//    list_delete(l);
+//}

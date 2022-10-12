@@ -7,13 +7,14 @@
 
 #include "lib.h"
 #include "stl.h"
+#include "memory.h"
 
 typedef struct config_node_s config_node_t;
 struct config_node_s{
     // 0 - 3 MAIN - ROUTE
-    int part;
-    //
-    int type;
+    unsigned int part;
+    // MAIN - ... PROTOCOL - ... SERVICE - ... ROUTE - ...
+    unsigned int type;
     config_node_t* parent;
     list_t *sons;
     void** data;
@@ -28,8 +29,14 @@ struct config_s{
 
     //main
     config_node_t *root;
+
+    memory_pool_t *pool;
 };
 
 config_t* config_create();
+
+void config_delete(config_t* config);
+
+void config_delete_void(void* config);
 
 #endif //SOCKET_CONFIG_H

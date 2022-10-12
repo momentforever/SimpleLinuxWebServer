@@ -3,24 +3,27 @@
 //
 
 #include "cycle_module.h"
+#include "listening_module.h"
 
 cycle_t* cycle_create(int connection_n){
     cycle_t *cycle;
     cycle = malloc(sizeof(cycle_t));
-    if(cycle==NULL){
-        return NULL;
-    }
+    if(cycle==NULL)return NULL;
+
+    cycle->pool = memory_pool_create();
+    if(cycle->pool==NULL)return NULL;
+
     cycle->connection_n = connection_n;
 
-    cycle->connections = malloc(connection_n * sizeof(connection_t));
+    cycle->connections = pmalloc(cycle->pool,connection_n * sizeof(connection_t));
     if(cycle->connections==NULL){
         return NULL;
     }
-    cycle->read_events = malloc(connection_n * sizeof(event_t));
+    cycle->read_events = pmalloc(cycle->pool, connection_n * sizeof(event_t));
     if(cycle->read_events==NULL){
         return NULL;
     }
-    cycle->write_events = malloc(connection_n * sizeof(event_t));
+    cycle->write_events = pmalloc(cycle->pool, connection_n * sizeof(event_t));
     if(cycle->write_events==NULL){
         return NULL;
     }
@@ -49,8 +52,9 @@ cycle_t* cycle_create(int connection_n){
     cycle->free_connection = cycle->connections;
 
     cycle->config = config_create(cycle->config);
+    pget(cycle->pool,cycle->config,config_delete_void);
 
-    cycle->listenings = listenings_create(cycle->config->root);
+    cycle->listenings = listenings_create(cycle->config);
 
     return cycle;
 }
@@ -67,4 +71,9 @@ int release_connection(cycle_t *cycle,connection_t *conn){
     //TODO 释放request
     cycle->free_connection = (connection_t*)conn;
     return OK;
+}
+
+void cycle_delete(cycle_t* cycle){
+    memory_pool_delete(cycle->pool);
+    free(cycle);
 }

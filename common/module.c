@@ -31,9 +31,9 @@ void module_init(module_t* modules[]){
         }
         modules_num+=1;
     }
-    debug("modules_num -> %d\n",modules_num);
-    debug("main_module_num -> %d\n",main_module_num);
-    debug("protocol_module_num -> %d\n",protocol_module_num);
-    debug("service_module_num -> %d\n",service_module_num);
-    debug("route_module_num -> %d\n",route_module_num);
+    debug("modules_num -> %d",modules_num);
+    debug("main_module_num -> %d",main_module_num);
+    debug("protocol_module_num -> %d",protocol_module_num);
+    debug("service_module_num -> %d",service_module_num);
+    debug("route_module_num -> %d",route_module_num);
 }

@@ -9,19 +9,19 @@
 #include "config.h"
 
 typedef struct module_s module_t;
-typedef int (*module_parse_handler_pt)(cJSON* config_fmt,config_node_t* config);
+typedef int (*module_parse_handler_pt)(cJSON* config_fmt,config_node_t* cn,config_t* c);
 
 typedef struct command_s command_t;
 
 struct command_s{
     char* name;
     // 凭此判断范围
-    int part;
+    unsigned int part;
     // 凭此判断类型
-    int main_type:8;
-    int protocol_type:8;
-    int service_type:8;
-    int route_type:8;
+    unsigned int main_type:8;
+    unsigned int protocol_type:8;
+    unsigned int service_type:8;
+    unsigned int route_type:8;
     module_parse_handler_pt parse_handler;
     //others
 };
@@ -30,11 +30,11 @@ struct module_s{
     int main_index;
     int protocol_index;
     int service_index;
-    int route_idx;
+    int route_index;
 
     char* name;
     // 凭此声明内存区
-    int type:4;
+    unsigned int type:4;
 
     module_parse_handler_pt pre_conf_handler;
     module_parse_handler_pt fin_conf_handler;
@@ -55,14 +55,14 @@ extern int route_module_num;
 
 void module_init(module_t* modules[]);
 
-#define get_main_conf_while_parse()
-#define get_protocol_conf_while_parse
-#define get_service_conf_while_parse
-#define get_route_conf_while_parse
-
-#define get_main_conf_while_handle
-#define get_protocol_conf_while_handle
-#define get_service_conf_while_handle
-#define get_route_conf_while_handle
+//#define get_main_conf_while_parse
+//#define get_protocol_conf_while_parse
+//#define get_service_conf_while_parse
+//#define get_route_conf_while_parse
+//
+//#define get_main_conf_while_handle
+//#define get_protocol_conf_while_handle
+//#define get_service_conf_while_handle
+//#define get_route_conf_while_handle
 
 #endif //SOCKET_MODULE_H

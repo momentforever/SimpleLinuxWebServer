@@ -62,4 +62,4 @@ out
 gen
 
 # Clion
-cmake-build-debug-docker
+cmake-build-debug

@@ -5,7 +5,6 @@
 #ifndef SOCKET_CORE_H
 #define SOCKET_CORE_H
 
-#include "connection_module.h"
 #include "cycle_module.h"
 #include "event_module.h"
 #include "listening_module.h"

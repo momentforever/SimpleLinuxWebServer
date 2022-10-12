@@ -6,18 +6,32 @@
 #define SOCKET_CYCLE_MODULE_H
 
 #include "lib.h"
-
-#include "connection_module.h"
+#include "common.h"
 #include "event_module.h"
 
+struct connection_s{
+    void* data;
+    int fd;
 
+    // format address
+    //char* clnt_addr_str;
+    struct sockaddr clnt_addr;
+    unsigned int clnt_addr_size;
 
-typedef struct cycle_s cycle_t;
+    listening_t* listening;
+
+    event_t *write;
+    event_t *read;
+
+    memory_pool_t *pool;
+};
 
 struct cycle_s{
     config_t *config;
 
     list_t *listenings;
+
+    memory_pool_t *pool;
     //list data->data
     connection_t* free_connection;
     //array [1024]

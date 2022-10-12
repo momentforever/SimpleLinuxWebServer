@@ -9,5 +9,6 @@
 #include "clock.h"
 #include "timer.h"
 #include "module.h"
+#include "memory.h"
 
 #endif //SOCKET_COMMON_H

@@ -26,9 +26,17 @@ list_node_t *list_node_push(list_t *list);
 list_node_t *list_node_insert(list_t *list,void *before_data);
 void list_node_delete(list_t *list,list_node_t *node);
 void list_delete(list_t *list);
+void list_delete_void(void *list);
+
 
 #define list_is_empty(l) \
     ((l)->size > 0 ? 1 : 0)
+
+#define list_init(l,value_size)     \
+    (l)->value_size = value_size;   \
+    (l)->end = NULL;                \
+    (l)->begin = NULL;              \
+    (l)->size = 0
 
 #define list_size(l) \
     (l)->size
@@ -38,7 +46,5 @@ void list_delete(list_t *list);
 
 #define list_end(l) \
     (l)->end
-
-// sort
 
 #endif //SOCKET_LIST_H

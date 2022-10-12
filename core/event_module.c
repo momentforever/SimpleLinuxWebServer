@@ -4,25 +4,31 @@
 
 #include "event_module.h"
 
-timer_rbtree_t *event_timer_tree;
-
-event_t* event_init(event_t *ev,unsigned rw,event_handler_pt handler,time_t ms){
+event_t* event_add(unsigned rw,event_handler_pt handler,time_t ms){
     //ev->data = (void*)s;
+    event_t *ev;
+    ev = malloc(sizeof(event_t));
+    if(ev == NULL){
+        return NULL;
+    }
+
     ev->rw = rw;
     ev->active = 0;
     ev->ready = 0;
     ev->error = 0;
     ev->eof = 0;
+    ev->accept = 0;
 
     ev->handler = handler;
-
-    timer_tree_timer_add(event_timer_tree,&ev->timer,ms);
 
     return ev;
 }
 
-void update_event_timer(event_t *ev,time_t ms){
-    timer_tree_timer_add(event_timer_tree,&ev->timer,ms);
+int event_delete(event_t *ev){
+
+    free(ev);
+    return OK;
 }
+
 
 

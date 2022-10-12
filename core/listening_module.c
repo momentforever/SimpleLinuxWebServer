@@ -7,15 +7,15 @@
 #include "common.h"
 #include "listening_module.h"
 
-int listen_parse_json(cJSON* data,config_node_t* config);
-int init_service_listening(cJSON* data, config_node_t *config);
+int listen_parse_json(cJSON* data,config_node_t *cn, config_t* c);
+int init_service_listening(cJSON* data, config_node_t *cn, config_t* c);
 
 static command_t listening_commands[] = {
         {
                 "listen",
                 SERVICE_MODULE,
-                UNSET,
-                TCP|UDP|HTTP|HTTPS|GRPC,
+                ALL_MAIN,
+                ALL_PROTOCOL,
                 SERVER,
                 UNSET,
                 listen_parse_json,
@@ -26,7 +26,7 @@ static command_t listening_commands[] = {
 module_t listening_module = {
         MODULE_START,
         "listening_module",
-        SERVICE_MODULE|MAIN_MODULE,
+        SERVICE_MODULE,
         UNSET,
         UNSET,
         UNSET,
@@ -36,60 +36,59 @@ module_t listening_module = {
         listening_commands,
 };
 
-int listen_parse_json(cJSON* data, config_node_t* config){
+int listen_parse_json(cJSON* data, config_node_t *cn, config_t* c){
     cJSON* listening = cJSON_GetObjectItem(data,"listen");
     if(listening == NULL){
         return ERROR;
     }
-    listening_t *cl = config->data[listening_module.service_index];
+    listening_t *cl = cn->data[listening_module.service_index];
     cl->port = listening->valueint;
-    debug("port -> %d \n",cl->port);
+    debug("port -> %d",cl->port);
 
-    cl->ip = malloc(sizeof(listening->valuestring));
+    cl->ip = pmalloc(c->pool,sizeof(listening->valuestring));
     strcpy(cl->ip,"0.0.0.0");
 
-    struct sockaddr_in *serv_addr_in = malloc(sizeof(struct sockaddr));
+    struct sockaddr_in *serv_addr_in = pmalloc(c->pool,sizeof(struct sockaddr));
     memset(serv_addr_in,0, sizeof(struct sockaddr));
     serv_addr_in->sin_family = AF_INET;
     serv_addr_in->sin_addr.s_addr = inet_addr(cl->ip);
     serv_addr_in->sin_port = htons(cl->port);
 
     cl->serv_addr = (struct sockaddr*)serv_addr_in;
-    debug("OK\n");
+    debug("OK");
     return OK;
 }
 
-int init_service_listening(cJSON* data, config_node_t *config){
+int init_service_listening(cJSON* data, config_node_t *cn, config_t* c){
     listening_t* cl;
-    cl = malloc(sizeof(listening_t));
+    cl = pmalloc(c->pool, sizeof(listening_t));
     if(cl == NULL){
         return ERROR;
     }
     memset(cl,0,sizeof(listening_t));
 
-    cl->type = config->parent->type;
+    cl->type = cn->parent->type;
     if(cl->type == HTTP || cl->type == HTTPS || cl->type == TCP){
         cl->fd_type = SOCK_STREAM;
-        debug("TCP\n");
     }else{
         cl->fd_type = SOCK_DGRAM;
-        debug("UDP\n");
     }
 
-    config->data[listening_module.service_index] = cl;
+    cn->data[listening_module.service_index] = cl;
 
     return OK;
 }
 
-list_t* listenings_create(config_node_t *config){
+list_t* listenings_create(config_t *c){
     // traversal
-    if(config->type != MAIN){
-        return NULL;
-    }
+    config_node_t* config = c->root;
 
     list_t* ls = list_create(sizeof(listening_t));
+    pget(c->pool,ls,list_delete_void);
+
     list_t *pcl = config->sons;
     list_node_t *pcln = pcl->begin;
+    // TODO 去重
     for(int pi = 0; pi < pcl->size; pi++){
         config_node_t *pc = pcln->value;
         list_t *scl = pc->sons;
@@ -108,3 +107,4 @@ list_t* listenings_create(config_node_t *config){
     }
     return ls;
 }
+
