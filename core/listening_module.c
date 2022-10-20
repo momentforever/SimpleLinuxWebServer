@@ -6,6 +6,7 @@
 #include "cycle_module.h"
 #include "common.h"
 #include "listening_module.h"
+#include "self_httpd.h"
 
 int listen_parse_json(cJSON* data,config_node_t *cn, config_t* c);
 int init_service_listening(cJSON* data, config_node_t *cn, config_t* c);
@@ -109,6 +110,12 @@ list_t* listenings_create(config_t *c){
     return ls;
 }
 
+void write_handler(event_t *ev){
+    debug("write_handler");
+    connection_t *con = ev->data;
+    request_handler((void*)&con->fd);
+}
+
 void accept_tcp(connection_t *c){
     connection_t *new_conn;
     struct epoll_event ev;
@@ -128,18 +135,15 @@ void accept_tcp(connection_t *c){
     new_conn->fd = conn_fd;
 
     // 根据协议分配不同handler
-    new_conn->write = NULL;
-    new_conn->read = NULL;
+    new_conn->read->handler = write_handler;
+    //new_conn->write->handler = NULL;
 
     ev.data.ptr = new_conn;
-    ev.data.fd = conn_fd;
     // 边缘触发
     ev.events = EPOLLIN | EPOLLET;
     epoll_ctl(g_epoll_fd,EPOLL_CTL_ADD,conn_fd,&ev);
-
-    debug("connected client : %d",conn_fd);
 }
 
-void accept_udp(connection_t *c){
+void accept_udp(connection_t *c) {
 
 }

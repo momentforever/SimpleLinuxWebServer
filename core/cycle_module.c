@@ -54,9 +54,9 @@ cycle_t* cycle_create(int connection_n){
     while(1){
         //double ptr
         cs[n].read = &res[n];
-        res->data = &cs[n];
+        res[n].data = &cs[n];
         cs[n].write = &wes[n];
-        wes->data = &cs[n];
+        wes[n].data = &cs[n];
         connection_init(&cs[n]);
 
         if(n >= connection_n - 1){

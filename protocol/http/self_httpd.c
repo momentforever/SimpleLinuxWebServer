@@ -92,7 +92,7 @@ void send_data(FILE *fp,char *ct,char *file_name){
 
     sprintf(cnt_type,"Content-type:%s\r\n\r\n",ct);
 
-    char abs_path[] = "/root/projects/Socket";
+    char abs_path[] = "/root/project/simpleLinuxWebServer";
     strcat(abs_path,file_name);
     printf("send path:%s\n",abs_path);
 

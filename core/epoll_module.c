@@ -46,12 +46,11 @@ void epoll_add_listening(int *epoll_fd){
         conn->listening = listening;
         conn->fd = listening->fd;
 
-        ev.data.ptr = conn;
-        ev.data.fd = listening->fd;
         ev.events = EPOLLIN;
+        ev.data.ptr = (void *)conn;
 
         //将listen_df注册到刚刚创建的epoll中
-        if(epoll_ctl(g_epoll_fd,EPOLL_CTL_ADD,ev.data.fd,&ev)==-1) {
+        if(epoll_ctl(g_epoll_fd,EPOLL_CTL_ADD,conn->fd,&ev)==-1) {
             perror("epoll_ctl error, message: ");
             exit(1);
         }
@@ -96,14 +95,24 @@ FIND_TIMER:
         }
         else{
             for(i = 0; i < ready_fd_num;i++){
-                ev_conn = (connection_t*)events[i].data.ptr;
-
+                ev_conn = (connection_t*)(events[i].data.ptr);
                 if(ev_conn->fd == ev_conn->listening->fd){
+                    if(ev_conn->listening->handler==NULL){
+                        debug("listen handler is NULL!");
+                        continue;
+                    }
                     ev_conn->listening->handler(ev_conn);
                 }
                 else if(events[i].events & EPOLLIN){
                     //request_handler(&events[i].data.fd);
+                    if(ev_conn->read->handler==NULL){
+                        debug("read handler is NULL!");
+                        continue;
+                    }
                     ev_conn->read->handler(ev_conn->read);
+                    //TODO if ev_conn->ev->eof == 1 release
+                    release_connection(g_cycle,events[i].data.ptr);
+
                 }
 //                else if(events[i].events & EPOLLOUT){
 //                    ev_conn->write->handler(ev_conn->write);
