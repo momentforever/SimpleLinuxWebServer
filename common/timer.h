@@ -15,10 +15,11 @@ struct timer_rbtree_s{
     rbtree_node_t sentinel;
 };
 
-typedef struct timer_node_s timer_node_t;
+typedef void (*timer_handler_pt)(void* data);
 
 struct timer_node_s{
     void *data;
+    timer_handler_pt handler;
 
     unsigned timed_out:1;
     time_t start_time;
@@ -26,13 +27,17 @@ struct timer_node_s{
     rbtree_node_t rbtree_node;
 };
 
+typedef struct timer_node_s timer_node_t;
+
 timer_rbtree_t* timer_tree_create();
 int timer_tree_init(timer_rbtree_t *timer_tree);
 
-timer_node_t *timer_tree_timer_add(timer_rbtree_t *timer_tree,time_t ms);
+timer_node_t *timer_tree_timer_create(timer_rbtree_t *timer_tree,timer_handler_pt handler, time_t ms);
 
 int timer_tree_timer_update(timer_rbtree_t *timer_tree,timer_node_t *timer,time_t ms);
-int timer_tree_timer_delete(timer_rbtree_t *timer_tree,timer_node_t *timer);
+
+void timer_tree_timer_remove(timer_rbtree_t *timer_tree,timer_node_t *timer);
+void timer_tree_timer_delete(timer_rbtree_t *timer_tree,timer_node_t *timer);
 
 //void rec_timer_set_timed_out(rbtree_node_t *node,rbtree_node_t *sentinel);
 

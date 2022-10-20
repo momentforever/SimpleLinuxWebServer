@@ -36,6 +36,8 @@ add_executable(Socket
         core/event_module.c
         core/listening_module.c
         core/epoll_module.c
+        core/request_module.c
+        core/session_module.c
 
         protocol/http/self_httpd.c
 

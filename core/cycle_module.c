@@ -5,15 +5,32 @@
 #include "cycle_module.h"
 #include "listening_module.h"
 
+void connection_init(connection_t *c){
+    c->data = NULL;
+    c->fd = 0;
+    memset(&c->clnt_addr,0,sizeof(struct sockaddr));
+    c->clnt_addr_size = 0;
+    c->listening = NULL;
+    event_init(c->read);
+    event_init(c->write);
+    if(c->pool == NULL){
+        c->pool=memory_pool_create();
+    }else{
+        memory_pool_init(c->pool);
+    }
+}
+
 cycle_t* cycle_create(int connection_n){
     cycle_t *cycle;
     cycle = malloc(sizeof(cycle_t));
     if(cycle==NULL)return NULL;
+    memset(cycle,0, sizeof(cycle_t));
 
     cycle->pool = memory_pool_create();
     if(cycle->pool==NULL)return NULL;
 
     cycle->connection_n = connection_n;
+    cycle->connection_cur = 0;
 
     cycle->connections = pmalloc(cycle->pool,connection_n * sizeof(connection_t));
     if(cycle->connections==NULL){
@@ -40,6 +57,7 @@ cycle_t* cycle_create(int connection_n){
         res->data = &cs[n];
         cs[n].write = &wes[n];
         wes->data = &cs[n];
+        connection_init(&cs[n]);
 
         if(n >= connection_n - 1){
             cs[n].data = NULL;
@@ -60,16 +78,25 @@ cycle_t* cycle_create(int connection_n){
 }
 
 connection_t *get_free_connection(cycle_t *cycle){
+    if(cycle->free_connection == NULL){
+        return NULL;
+    }
     connection_t *conn = cycle->free_connection;
     // next
     cycle->free_connection = (connection_t*)cycle->free_connection->data;
+    connection_init(conn);
+    cycle->connection_cur+=1;
+    debug_assert(cycle->connection_cur<=cycle->connection_n);
     return conn;
 }
 
 int release_connection(cycle_t *cycle,connection_t *conn){
     conn->data = (void*)cycle->free_connection;
     //TODO 释放request
+    pfree(conn->pool);
     cycle->free_connection = (connection_t*)conn;
+    cycle->connection_cur-=1;
+    debug_assert(cycle->connection_cur>=0);
     return OK;
 }
 

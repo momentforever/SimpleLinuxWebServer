@@ -29,4 +29,8 @@ struct listening_s{
 
 list_t* listenings_create(config_t *c);
 
+void accept_tcp(connection_t *c);
+void accept_udp(connection_t *c);
+
+
 #endif //SOCKET_LISTENING_MODULE_H

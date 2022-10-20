@@ -50,7 +50,7 @@ int timer_tree_init(timer_rbtree_t *timer_tree){
     return OK;
 }
 
-timer_node_t *timer_tree_timer_add(timer_rbtree_t *timer_tree,time_t ms){
+timer_node_t *timer_tree_timer_create(timer_rbtree_t *timer_tree,timer_handler_pt handler,time_t ms){
     if(ms < 0){
         return NULL;
     }
@@ -59,7 +59,7 @@ timer_node_t *timer_tree_timer_add(timer_rbtree_t *timer_tree,time_t ms){
     if(timer == NULL){
         return NULL;
     }
-
+    timer->handler = handler;
     timer->timed_out = 0;
     timer->timeout_time = current_monotonic_timestamp + ms;
     timer->start_time = current_monotonic_timestamp;
@@ -93,10 +93,20 @@ int timer_tree_timer_update(timer_rbtree_t *timer_tree,timer_node_t *timer,time_
     rbtree_node_insert(&timer_tree->rbtree,&timer->rbtree_node);
 }
 
-int timer_tree_timer_delete(timer_rbtree_t *timer_tree,timer_node_t *timer){
+void timer_tree_timer_remove(timer_rbtree_t *timer_tree,timer_node_t *timer){
     rbtree_node_delete(&timer_tree->rbtree,&timer->rbtree_node);
+    timer->timed_out = 0;
+    timer->timeout_time = 0;
+    timer->start_time = 0;
+    // handler
+    if(timer->handler != NULL){
+        timer->handler(timer->data);
+    }
+}
+
+void timer_tree_timer_delete(timer_rbtree_t *timer_tree,timer_node_t *timer){
+    timer_tree_timer_remove(timer_tree,timer);
     free(timer);
-    return OK;
 }
 
 timer_node_t *timer_tree_get_min_timer(timer_rbtree_t *timer_tree){

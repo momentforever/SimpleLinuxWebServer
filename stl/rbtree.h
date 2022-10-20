@@ -43,6 +43,12 @@ void rbtree_node_insert(rbtree_t *tree,rbtree_node_t *node);
 
 void rbtree_node_delete(rbtree_t *tree,rbtree_node_t *node);
 
+#define rbtree_node_init(node)  \
+        (node)->key=NULL;       \
+        (node)->left=NULL;      \
+        (node)->right=NULL;     \
+        (node)->parent=NULL;    \
+        rbtree_black(node)
 
 #define rbtree_red(node) ((node)->color=1)
 #define rbtree_black(node) ((node)->color=0)

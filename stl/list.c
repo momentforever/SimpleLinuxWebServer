@@ -127,24 +127,3 @@ void list_delete(list_t *list){
     // size = 0
     free(list);
 }
-
-//void list_demo(){
-//    list_t *l = list_create(sizeof(int));
-//
-//    list_node_t *n;
-//    int* i;
-//    n = list_node_push(l);
-//
-//    i = n->value;
-//    *i = 10;
-//
-//    list_is_empty(l);
-//    list_size(l);
-//
-//    n = list_node_insert(l,n);
-//    *i = 15;
-//
-//    list_node_delete(l,n);
-//
-//    list_delete(l);
-//}

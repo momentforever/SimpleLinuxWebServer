@@ -36,6 +36,7 @@ struct cycle_s{
     connection_t* free_connection;
     //array [1024]
     int connection_n;
+    int connection_cur;
     connection_t* connections;
     event_t* read_events;
     event_t* write_events;
@@ -45,5 +46,6 @@ cycle_t* cycle_create(int connection_n);
 connection_t *get_free_connection(cycle_t *cycle);
 int release_connection(cycle_t *cycle,connection_t *conn);
 
+void connection_init(connection_t* c);
 
 #endif //SOCKET_CYCLE_MODULE_H

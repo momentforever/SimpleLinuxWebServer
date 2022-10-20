@@ -55,7 +55,6 @@ int listen_parse_json(cJSON* data, config_node_t *cn, config_t* c){
     serv_addr_in->sin_port = htons(cl->port);
 
     cl->serv_addr = (struct sockaddr*)serv_addr_in;
-    debug("OK");
     return OK;
 }
 
@@ -70,8 +69,10 @@ int init_service_listening(cJSON* data, config_node_t *cn, config_t* c){
     cl->type = cn->parent->type;
     if(cl->type == HTTP || cl->type == HTTPS || cl->type == TCP){
         cl->fd_type = SOCK_STREAM;
+        cl->handler = accept_tcp;
     }else{
         cl->fd_type = SOCK_DGRAM;
+        cl->handler = accept_udp;
     }
 
     cn->data[listening_module.service_index] = cl;
@@ -108,3 +109,37 @@ list_t* listenings_create(config_t *c){
     return ls;
 }
 
+void accept_tcp(connection_t *c){
+    connection_t *new_conn;
+    struct epoll_event ev;
+
+    new_conn = get_free_connection(g_cycle);
+    if(new_conn == NULL){
+        debug("no free connection!");
+        return;
+    }
+    new_conn->listening = c->listening;
+
+    int conn_fd = accept(c->fd, (struct sockaddr *)&new_conn->clnt_addr, &new_conn->clnt_addr_size);
+    if(conn_fd == -1){
+        perror("accept error.");
+        return;
+    }
+    new_conn->fd = conn_fd;
+
+    // 根据协议分配不同handler
+    new_conn->write = NULL;
+    new_conn->read = NULL;
+
+    ev.data.ptr = new_conn;
+    ev.data.fd = conn_fd;
+    // 边缘触发
+    ev.events = EPOLLIN | EPOLLET;
+    epoll_ctl(g_epoll_fd,EPOLL_CTL_ADD,conn_fd,&ev);
+
+    debug("connected client : %d",conn_fd);
+}
+
+void accept_udp(connection_t *c){
+
+}

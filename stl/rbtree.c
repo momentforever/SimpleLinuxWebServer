@@ -119,7 +119,6 @@ void rbtree_node_insert(rbtree_t *tree,rbtree_node_t *node){
 }
 
 void rbtree_node_delete(rbtree_t *tree,rbtree_node_t *node){
-
     // empty
     if(rbtree_is_empty(tree)){
         return;
@@ -239,7 +238,7 @@ right_double_black:
 
     //delete
     (replace_node->parent->left == replace_node)?(replace_node->parent->left = tree->sentinel):(replace_node->parent->right = tree->sentinel);
-
+    rbtree_node_init(node);
 }
 
 void switch_node(rbtree_t *tree, rbtree_node_t *a,rbtree_node_t *b){
