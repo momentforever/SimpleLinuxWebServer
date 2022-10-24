@@ -5,6 +5,68 @@
 #include "cycle_module.h"
 #include "listening_module.h"
 
+int cycle_parse_json(cJSON* data,config_node_t *cn, config_t* c);
+int cycle_config_init(cJSON* data, config_node_t *cn, config_t* c);
+
+static command_t cycle_commands[] = {
+        {
+                "cycle",
+                MAIN_MODULE,
+                ALL_MAIN,
+                UNSET,
+                UNSET,
+                UNSET,
+                cycle_parse_json,
+        },
+        NULL
+};
+
+module_t cycle_module = {
+        MODULE_START,
+        "cycle_module",
+        MAIN_MODULE,
+        UNSET,
+        UNSET,
+        cycle_config_init,
+        UNSET,
+        UNSET,
+        UNSET,
+        cycle_commands,
+};
+
+int cycle_config_init(cJSON* data, config_node_t *cn, config_t* c){
+    cycle_config_t *ccf;
+    ccf = pmalloc(c->pool,sizeof(cycle_config_t));
+    if(ccf == NULL){
+        return ERROR;
+    }
+    ccf->connection = 512;
+    ccf->process = 1;
+
+    cn->data[cycle_module.main_index] = ccf;
+    return OK;
+}
+
+int cycle_parse_json(cJSON* data, config_node_t *cn, config_t* c){
+    cJSON* json;
+    cJSON* cycle_json = cJSON_GetObjectItem(data,"cycle");
+    cycle_config_t *cf = cn->data[cycle_module.main_index];
+
+    json = cJSON_GetObjectItem(cycle_json,"connection");
+    if(json!=NULL){
+        cf->connection = json->valueint;
+    }
+    debug("connection -> %d",cf->connection);
+
+    json = cJSON_GetObjectItem(cycle_json,"process");
+    if(json!=NULL){
+        cf->process = json->valueint;
+    }
+    debug("process -> %d",cf->process);
+
+    return OK;
+}
+
 void connection_init(connection_t *c){
     c->data = NULL;
     c->fd = 0;
@@ -20,7 +82,11 @@ void connection_init(connection_t *c){
     }
 }
 
-cycle_t* cycle_create(int connection_n){
+cycle_t* cycle_create(config_t *c){
+
+    cycle_config_t *ccf = c->root->data[cycle_module.main_index];
+    int connection_n = ccf->connection;
+
     cycle_t *cycle;
     cycle = malloc(sizeof(cycle_t));
     if(cycle==NULL)return NULL;
@@ -69,7 +135,9 @@ cycle_t* cycle_create(int connection_n){
     }
     cycle->free_connection = cycle->connections;
 
-    cycle->config = config_create(cycle->config);
+//    cycle->config = config_create(cycle->config);
+//    pget(cycle->pool,cycle->config,config_delete_void);
+    cycle->config = c;
     pget(cycle->pool,cycle->config,config_delete_void);
 
     cycle->listenings = listenings_create(cycle->config);
@@ -103,4 +171,24 @@ int release_connection(cycle_t *cycle,connection_t *conn){
 void cycle_delete(cycle_t* cycle){
     memory_pool_delete(cycle->pool);
     free(cycle);
+}
+
+void cycle_process_fork(cycle_t *cycle){
+    cycle_config_t *ccf = cycle->config->root->data[cycle_module.main_index];
+    int worker_process = ccf->process;
+
+    int pid = 0;
+    char *master_name = "slws_master";
+    prctl(PR_SET_NAME,master_name);
+
+    for (int i = 0; i < worker_process;i++) {
+        if (pid == 0) {
+            pid = fork();
+            char *worker_name = "slws_worker";
+            prctl(PR_SET_NAME,worker_name);
+        }else{
+            debug("worker %d", pid);
+            break;
+        }
+    }
 }

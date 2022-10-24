@@ -37,6 +37,26 @@ module_t listening_module = {
         listening_commands,
 };
 
+int init_service_listening(cJSON* data, config_node_t *cn, config_t* c){
+    listening_t* cl;
+    cl = pmalloc(c->pool, sizeof(listening_t));
+    if(cl == NULL){
+        return ERROR;
+    }
+
+    cl->type = cn->parent->type;
+    if(cl->type == HTTP || cl->type == HTTPS || cl->type == TCP){
+        cl->fd_type = SOCK_STREAM;
+        cl->handler = accept_tcp;
+    }else{
+        cl->fd_type = SOCK_DGRAM;
+        cl->handler = accept_udp;
+    }
+
+    cn->data[listening_module.service_index] = cl;
+    return OK;
+}
+
 int listen_parse_json(cJSON* data, config_node_t *cn, config_t* c){
     cJSON* listening = cJSON_GetObjectItem(data,"listen");
     if(listening == NULL){
@@ -59,27 +79,6 @@ int listen_parse_json(cJSON* data, config_node_t *cn, config_t* c){
     return OK;
 }
 
-int init_service_listening(cJSON* data, config_node_t *cn, config_t* c){
-    listening_t* cl;
-    cl = pmalloc(c->pool, sizeof(listening_t));
-    if(cl == NULL){
-        return ERROR;
-    }
-    memset(cl,0,sizeof(listening_t));
-
-    cl->type = cn->parent->type;
-    if(cl->type == HTTP || cl->type == HTTPS || cl->type == TCP){
-        cl->fd_type = SOCK_STREAM;
-        cl->handler = accept_tcp;
-    }else{
-        cl->fd_type = SOCK_DGRAM;
-        cl->handler = accept_udp;
-    }
-
-    cn->data[listening_module.service_index] = cl;
-
-    return OK;
-}
 
 list_t* listenings_create(config_t *c){
     // traversal
@@ -117,21 +116,26 @@ void write_handler(event_t *ev){
 }
 
 void accept_tcp(connection_t *c){
-    connection_t *new_conn;
     struct epoll_event ev;
+    connection_t *new_conn;
+    struct sockaddr clnt_addr;
+    unsigned int clnt_addr_size;
+
+    int conn_fd = accept(c->fd, &clnt_addr, &clnt_addr_size);
+    if(conn_fd == -1){
+        perror("accept error.");
+        return;
+    }
 
     new_conn = get_free_connection(g_cycle);
     if(new_conn == NULL){
         debug("no free connection!");
         return;
     }
+    memcpy(&new_conn->clnt_addr,&clnt_addr, sizeof(struct sockaddr));
+    new_conn->clnt_addr_size = clnt_addr_size;
     new_conn->listening = c->listening;
 
-    int conn_fd = accept(c->fd, (struct sockaddr *)&new_conn->clnt_addr, &new_conn->clnt_addr_size);
-    if(conn_fd == -1){
-        perror("accept error.");
-        return;
-    }
     new_conn->fd = conn_fd;
 
     // 根据协议分配不同handler

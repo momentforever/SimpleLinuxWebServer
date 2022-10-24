@@ -25,6 +25,8 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
+#include <sys/prctl.h>
+
 #include "cJSON.h"
 
 
@@ -72,10 +74,7 @@ typedef struct listening_s listening_t;
 
 typedef void (*connection_handler_pt)(connection_t *c);
 
-
-#define LISTENING_MODULE 1
-#define EPOLL_MODULE 2
-#define EVENT_MODULE 3
+extern char** environ;
 
 #define MAIN_MODULE     0b0001
 #define PROTOCOL_MODULE 0b0010

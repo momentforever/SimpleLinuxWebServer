@@ -4,6 +4,7 @@
 #include "auto.h"
 
 module_t *modules[] = {
+        &cycle_module,
         &listening_module,
         NULL,
 };

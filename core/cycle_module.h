@@ -9,6 +9,13 @@
 #include "common.h"
 #include "event_module.h"
 
+typedef struct cycle_config_s cycle_config_t;
+
+struct cycle_config_s{
+    int connection;
+    int process;
+};
+
 struct connection_s{
     void* data;
     int fd;
@@ -42,10 +49,12 @@ struct cycle_s{
     event_t* write_events;
 };
 
-cycle_t* cycle_create(int connection_n);
+cycle_t* cycle_create(config_t *config);
 connection_t *get_free_connection(cycle_t *cycle);
 int release_connection(cycle_t *cycle,connection_t *conn);
 
 void connection_init(connection_t* c);
+
+void cycle_process_fork(cycle_t *cycle);
 
 #endif //SOCKET_CYCLE_MODULE_H
