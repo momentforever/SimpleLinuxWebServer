@@ -33,7 +33,7 @@ void epoll_add_listening(int *epoll_fd){
             exit(1);
         }
 
-        // TODO TCP和UDP创建socket过程不同
+        // TCP和UDP创建socket过程不同
         if(listening->fd_type == SOCK_STREAM){
             if(listen(listening->fd,SOMAXCONN)==-1){
                 perror("listen error, message: ");
@@ -57,9 +57,23 @@ void epoll_add_listening(int *epoll_fd){
 
     }
 }
+_Noreturn void master_cycle(){
+    debugln("master cycle");
+    while(1){
+        // TODO 非阻塞，添加到定时器中
+        int status;
+        wait(&status);
+        cycle_process_restart();
+        if(g_process_type==WORKER)break;
+    }
+}
 
+_Noreturn void worker_cycle(int *epoll_fd){
+    debugln("worker cycle");
+    sleep(5);
+    int *ptr = NULL;
+    *ptr = 100;
 
-_Noreturn void epoll_cycle(int *epoll_fd){
     struct epoll_event events[g_cycle->connection_n];
     int ready_fd_num;
     int i;
@@ -72,7 +86,6 @@ _Noreturn void epoll_cycle(int *epoll_fd){
         update_time();
         timer_tree_update(g_event_timer_tree);
 FIND_TIMER:
-        //TODO UNBLOCK Timer
         wait = ETERNITY;
         tn = timer_tree_get_min_timer(g_event_timer_tree);
 

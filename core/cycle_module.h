@@ -56,5 +56,5 @@ int release_connection(cycle_t *cycle,connection_t *conn);
 void connection_init(connection_t* c);
 
 void cycle_process_fork(cycle_t *cycle);
-
+void cycle_process_restart();
 #endif //SOCKET_CYCLE_MODULE_H

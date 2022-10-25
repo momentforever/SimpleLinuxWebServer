@@ -183,13 +183,23 @@ void cycle_process_fork(cycle_t *cycle){
 
     for (int i = 0; i < worker_process;i++) {
         pid = fork();
-        char *worker_name = "slws_worker";
-        prctl(PR_SET_NAME,worker_name);
-
         if (pid == 0) {
+            char *worker_name = "slws_worker";
+            prctl(PR_SET_NAME,worker_name);
             g_process_type = WORKER;
             debugln("worker%d -> %d", i, getpid());
             break;
         }
+    }
+}
+
+void cycle_process_restart(){
+    debugln("worker is restart");
+    int pid;
+    pid = fork();
+    if (pid == 0) {
+        char *worker_name = "slws_worker";
+        prctl(PR_SET_NAME,worker_name);
+        g_process_type = WORKER;
     }
 }

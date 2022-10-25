@@ -28,12 +28,11 @@ int main(int argc,char *argv[]) {
 
     if(g_process_type == MASTER){
         //master
-        debugln("master cycle");
-        while(1);
-    }else{
-        //worker
-        debugln("worker cycle");
-        epoll_cycle(&g_epoll_fd);
+        master_cycle();
+    }
+
+    if(g_process_type == WORKER){
+        worker_cycle(&g_epoll_fd);
     }
 
     return 0;
