@@ -68,11 +68,8 @@ _Noreturn void master_cycle(){
     }
 }
 
-_Noreturn void worker_cycle(int *epoll_fd){
+_Noreturn void worker_cycle(){
     debugln("worker cycle");
-    sleep(5);
-    int *ptr = NULL;
-    *ptr = 100;
 
     struct epoll_event events[g_cycle->connection_n];
     int ready_fd_num;

@@ -3,6 +3,9 @@
 //
 #include "lib.h"
 
+int g_argc;
+char **g_argv;
+
 int g_epoll_fd = -1;
 
 int g_process_type = MASTER;

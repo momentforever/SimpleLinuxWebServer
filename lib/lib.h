@@ -63,6 +63,11 @@
 #define debugln()
 #endif
 
+extern char **environ;
+
+extern int g_argc;
+extern char **g_argv;
+
 extern int g_epoll_fd;
 
 extern int g_process_type;

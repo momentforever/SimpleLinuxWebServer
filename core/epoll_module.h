@@ -18,7 +18,7 @@ void epoll_add_listening(int *epoll_fd);
 #define epoll_remove(epoll_fd,socket_fd,ev) \
     epoll_ctl(epoll_fd,EPOLL_CTL_DEL,socket_fd,ev);
 
-void worker_cycle(int *epoll_fd);
+void worker_cycle();
 void master_cycle();
 
 #endif //SOCKET_EPOLL_CORE_H

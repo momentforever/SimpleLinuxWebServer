@@ -178,14 +178,12 @@ void cycle_process_fork(cycle_t *cycle){
     int worker_process = ccf->process;
 
     int pid = 0;
-    char *master_name = "slws_master";
-    prctl(PR_SET_NAME,master_name);
+    set_proctitle(g_argv,environ,"slws_master");
 
     for (int i = 0; i < worker_process;i++) {
         pid = fork();
         if (pid == 0) {
-            char *worker_name = "slws_worker";
-            prctl(PR_SET_NAME,worker_name);
+            set_proctitle(g_argv,environ,"slws_worker");
             g_process_type = WORKER;
             debugln("worker%d -> %d", i, getpid());
             break;
@@ -198,8 +196,47 @@ void cycle_process_restart(){
     int pid;
     pid = fork();
     if (pid == 0) {
-        char *worker_name = "slws_worker";
-        prctl(PR_SET_NAME,worker_name);
+        set_proctitle(g_argv,environ,"slws_worker");
         g_process_type = WORKER;
+    }
+}
+
+void set_proctitle(char** argv,char** env, const char* name){
+    debugln("set_proctitle -> %s",name);
+    //quick path
+    if(strlen(argv[0]) > strlen(name)){
+        memset(argv[0],0,strlen(argv[0]));
+        strncpy(argv[0],name,strlen(name));
+        return;
+    }
+    //slow path
+    int size = 0;
+    int i;
+    for(i = 0;env[i];i++){
+        size += (int)strlen(env[i]) + 1;
+    }
+    char* p = (char*)malloc(size);
+    char* last_argv = argv[0];
+    for(i = 0;argv[i];i++){
+        if(last_argv == argv[i]){
+            last_argv = argv[i] + strlen(argv[i]) + 1;
+        }
+    }
+
+    for(i = 0;env[i];i++){
+        if(last_argv == env[i]){
+            size = (int)strlen(env[i]) + 1;
+            last_argv = env[i] + size;
+
+            memcpy(p,env[i],size);
+            env[i]=(char*)p;
+            p += size;
+        }
+    }
+    last_argv--;
+    strncpy(argv[0],name,last_argv - argv[0]);
+    p = argv[0] + strlen(argv[0]) + 1;
+    if(last_argv - p > 0){
+        memset(p,0,last_argv - p);
     }
 }

@@ -57,4 +57,5 @@ void connection_init(connection_t* c);
 
 void cycle_process_fork(cycle_t *cycle);
 void cycle_process_restart();
+void set_proctitle(char** argv,char** env, const char* name);
 #endif //SOCKET_CYCLE_MODULE_H

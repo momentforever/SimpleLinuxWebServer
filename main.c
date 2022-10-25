@@ -14,6 +14,10 @@
 #include "auto.h"
 
 int main(int argc,char *argv[]) {
+    //TODO env func
+    g_argc = argc;
+    g_argv = argv;
+
     module_init(modules);
     config_t *c = config_create();
     g_cycle = cycle_create(c);
@@ -32,7 +36,7 @@ int main(int argc,char *argv[]) {
     }
 
     if(g_process_type == WORKER){
-        worker_cycle(&g_epoll_fd);
+        worker_cycle();
     }
 
     return 0;
