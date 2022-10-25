@@ -276,7 +276,7 @@ config_t* config_create(){
 
     config_init(config);
 
-    debug("Finish config create.");
+    debugln("Finish config create.");
     return config;
 }
 

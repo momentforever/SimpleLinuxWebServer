@@ -47,19 +47,25 @@
 #define ERROR 1
 #define AGAIN 2
 
+#define MASTER 0
+#define WORKER 1
+
 #define W (unsigned)0
 #define R (unsigned)1
 
 #ifdef WITH_DEBUG
 #include <assert.h>
-#define debug(...) printf(__VA_ARGS__); printf("\n")
+#define debugln(...) printf(__VA_ARGS__); printf("\n")
+#define debug(...) printf(__VA_ARGS__)
 #define debug_assert(...) assert(__VA_ARGS__)
 #else
 #define debug_assert()
-#define debug()
+#define debugln()
 #endif
 
 extern int g_epoll_fd;
+
+extern int g_process_type;
 
 typedef struct cycle_s cycle_t;
 extern cycle_t *g_cycle;

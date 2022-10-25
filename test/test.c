@@ -198,21 +198,21 @@ void memory_test(){
     pool = memory_pool_create();
     int *a = pmalloc(pool,sizeof(int));
     *a = 10;
-    debug("!");
+    debugln("!");
 
     int *b = malloc(sizeof(int));
     *b = 200;
-    debug("%p",b);
+    debugln("%p", b);
     pget(pool,b,free);
 
-    debug("%d",*(int*)(pool->end->ptr));
+    debugln("%d", *(int*)(pool->end->ptr));
 //    int *b = pmalloc(pool,sizeof(int));
 //    *b = 20;
 
 
-    debug("%ld",pool->size);
+    debugln("%ld", pool->size);
 
     pfree(pool);
 
-    debug("%ld",pool->size);
+    debugln("%ld", pool->size);
 }

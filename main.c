@@ -1,10 +1,12 @@
-// 1.实现一个简单的web服务器,通过epoll √
-// TODO 多线程 × 多进程 √
-// 2.尝试实现一个非阻塞的web服务器 √
-// 3.尝试实现一个异步的web服务器
-// 3.1.定时器 √
-// 3.2 引入内存管理（内存池） √
+// 一个简单的web服务器,通过epoll
+// 多线程 × 多进程 √
+// 一个非阻塞的web服务器
+// 一个异步的web服务器
+// 添加定时器
+// 引入内存管理（内存池）
 // TODO 企图引入协程
+// TODO 日志
+// TODO 信号
 
 #include "core.h"
 #include "lib.h"
@@ -24,13 +26,13 @@ int main(int argc,char *argv[]) {
     //process fork
     cycle_process_fork(g_cycle);
 
-    if(getpid() == 0){
+    if(g_process_type == MASTER){
         //master
-        debug("master");
+        debugln("master cycle");
         while(1);
     }else{
         //worker
-        debug("worker");
+        debugln("worker cycle");
         epoll_cycle(&g_epoll_fd);
     }
 

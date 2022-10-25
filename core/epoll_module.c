@@ -66,7 +66,7 @@ _Noreturn void epoll_cycle(int *epoll_fd){
     connection_t *ev_conn;
     timer_node_t *tn;
     int wait;
-    debug("start socket!\n");
+    debugln("start socket!\n");
 
     for(;;){
         update_time();
@@ -88,7 +88,7 @@ FIND_TIMER:
             }
         }
 
-        debug("waiting time -> %d",wait);
+        debugln("waiting time -> %d", wait);
         ready_fd_num = epoll_wait(g_epoll_fd,events,(int)g_cycle->connection_n,wait);
         if(ready_fd_num == 0){
             // handler timeout
@@ -98,7 +98,7 @@ FIND_TIMER:
                 ev_conn = (connection_t*)(events[i].data.ptr);
                 if(ev_conn->fd == ev_conn->listening->fd){
                     if(ev_conn->listening->handler==NULL){
-                        debug("listen handler is NULL!");
+                        debugln("listen handler is NULL!");
                         continue;
                     }
                     ev_conn->listening->handler(ev_conn);
@@ -106,7 +106,7 @@ FIND_TIMER:
                 else if(events[i].events & EPOLLIN){
                     //request_handler(&events[i].data.fd);
                     if(ev_conn->read->handler==NULL){
-                        debug("read handler is NULL!");
+                        debugln("read handler is NULL!");
                         continue;
                     }
                     ev_conn->read->handler(ev_conn->read);

@@ -1,7 +1,7 @@
 {
   "version": "slws",
   "cycle": {
-    "process": 1,
+    "process": 4,
     "connection": 1024
   },
   "protocol": [

@@ -52,7 +52,7 @@ void rbtree_node_insert(rbtree_t *tree,rbtree_node_t *node){
 
     //insert
     if(tree->insert_func(root,node,sentinel) == NULL){
-        printf("error\n");
+        debugln("error\n");
         return;
     }
     //balance
@@ -339,6 +339,6 @@ void right_turn(rbtree_t *tree, rbtree_node_t *node){
 void rbtree_middleorder(rbtree_t *tree,rbtree_node_t *node){
     if(node==tree->sentinel)return;
     rbtree_middleorder(tree,node->left);
-    printf("%d ",*(int*)node->key);
+    debug("%d ",*(int*)node->key);
     rbtree_middleorder(tree,node->right);
 }

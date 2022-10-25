@@ -56,13 +56,13 @@ int cycle_parse_json(cJSON* data, config_node_t *cn, config_t* c){
     if(json!=NULL){
         cf->connection = json->valueint;
     }
-    debug("connection -> %d",cf->connection);
+    debugln("connection -> %d", cf->connection);
 
     json = cJSON_GetObjectItem(cycle_json,"process");
     if(json!=NULL){
         cf->process = json->valueint;
     }
-    debug("process -> %d",cf->process);
+    debugln("process -> %d", cf->process);
 
     return OK;
 }
@@ -182,12 +182,13 @@ void cycle_process_fork(cycle_t *cycle){
     prctl(PR_SET_NAME,master_name);
 
     for (int i = 0; i < worker_process;i++) {
+        pid = fork();
+        char *worker_name = "slws_worker";
+        prctl(PR_SET_NAME,worker_name);
+
         if (pid == 0) {
-            pid = fork();
-            char *worker_name = "slws_worker";
-            prctl(PR_SET_NAME,worker_name);
-        }else{
-            debug("worker %d", pid);
+            g_process_type = WORKER;
+            debugln("worker%d -> %d", i, getpid());
             break;
         }
     }

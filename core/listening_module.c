@@ -64,7 +64,7 @@ int listen_parse_json(cJSON* data, config_node_t *cn, config_t* c){
     }
     listening_t *cl = cn->data[listening_module.service_index];
     cl->port = listening->valueint;
-    debug("port -> %d",cl->port);
+    debugln("port -> %d", cl->port);
 
     cl->ip = pmalloc(c->pool,sizeof(listening->valuestring));
     strcpy(cl->ip,"0.0.0.0");
@@ -110,7 +110,7 @@ list_t* listenings_create(config_t *c){
 }
 
 void write_handler(event_t *ev){
-    debug("write_handler");
+    debugln("write_handler");
     connection_t *con = ev->data;
     request_handler((void*)&con->fd);
 }
@@ -129,7 +129,7 @@ void accept_tcp(connection_t *c){
 
     new_conn = get_free_connection(g_cycle);
     if(new_conn == NULL){
-        debug("no free connection!");
+        debugln("no free connection!");
         return;
     }
     memcpy(&new_conn->clnt_addr,&clnt_addr, sizeof(struct sockaddr));
