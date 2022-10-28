@@ -6,7 +6,8 @@
 
 
 void event_init(event_t *ev){
-    ev->rw = 0;
+    ev->write = 0;
+    ev->read = 0;
     ev->active = 0;
     ev->ready = 0;
     ev->error = 0;

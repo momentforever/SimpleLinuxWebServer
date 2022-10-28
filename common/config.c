@@ -6,6 +6,18 @@
 #include "lib.h"
 #include "auto.h"
 
+void config_error_handler(const char* command){
+    debugln("%s Config Init Error!",command);
+    exit(-1);
+}
+#define conf_error() config_error_handler(modules[module_i]->name)
+
+void config_command_error_handler(const char* module,const char* command){
+    debugln("%s Config Parse Directive %s Error!",module,command);
+    exit(-1);
+}
+#define conf_command_error() config_command_error_handler(modules[module_i]->name,modules[module_i]->commands[command_i]->name)
+
 // 使用了全局变量
 config_node_t* config_node_add(config_t *config, config_node_t *parent,int type){
     config_node_t *node;
@@ -129,19 +141,25 @@ int config_init(config_t* config){
 
     for(int module_i = 0;modules[module_i]!=NULL;module_i++){
         if(modules[module_i]->pre_conf_handler!=UNSET){
-            modules[module_i]->pre_conf_handler(json_main,main,config);
+            if(modules[module_i]->pre_conf_handler(json_main,main,config)==ERROR){
+                conf_error();
+            }
         }
     }
 
     for(int module_i = 0;modules[module_i]!=NULL;module_i++){
         if(modules[module_i]->init_main_handler!=UNSET){
-            modules[module_i]->init_main_handler(json_main,main,config);
+            if(modules[module_i]->init_main_handler(json_main,main,config) ==ERROR){
+                conf_error();
+            }
         }
         //if(modules[module_i]->type & main->part){
             for(int command_i = 0;modules[module_i]->commands[command_i] != NULL;command_i++){
                 if((modules[module_i]->commands[command_i]->part & main->part)
                 &&(modules[module_i]->commands[command_i]->main_type & main->type)){
-                    modules[module_i]->commands[command_i]->parse_handler(json_main,main,config);
+                    if(modules[module_i]->commands[command_i]->parse_handler(json_main,main,config)==ERROR){
+                        conf_command_error();
+                    }
                 }
             }
         //}
@@ -160,14 +178,18 @@ int config_init(config_t* config){
 
         for(int module_i = 0;modules[module_i]!=NULL;module_i++){
             if(modules[module_i]->init_protocol_handler!=UNSET){
-                modules[module_i]->init_protocol_handler(json_protocol,protocol,config);
+                if(modules[module_i]->init_protocol_handler(json_protocol,protocol,config) == ERROR){
+                    conf_error();
+                };
             }
             //if(modules[module_i]->type & protocol->part){
                 for(int command_i = 0;modules[module_i]->commands[command_i] != NULL;command_i++){
                     if((modules[module_i]->commands[command_i]->part & protocol->part)
                        &&(modules[module_i]->commands[command_i]->protocol_type & protocol->type)
                          &&(modules[module_i]->commands[command_i]->main_type & main->type)){
-                        modules[module_i]->commands[command_i]->parse_handler(json_protocol,protocol,config);
+                        if(modules[module_i]->commands[command_i]->parse_handler(json_protocol,protocol,config) == ERROR){
+                            conf_command_error();
+                        };
                     }
                 }
             //}
@@ -186,7 +208,9 @@ int config_init(config_t* config){
 
             for(int module_i = 0;modules[module_i]!=NULL;module_i++){
                 if(modules[module_i]->init_service_handler!=UNSET){
-                    modules[module_i]->init_service_handler(json_service,service,config);
+                    if(modules[module_i]->init_service_handler(json_service,service,config) == ERROR){
+                        conf_error();
+                    }
                 }
                 //if(modules[module_i]->type & service->part){
                     for(int command_i = 0;modules[module_i]->commands[command_i] != NULL;command_i++){
@@ -194,7 +218,9 @@ int config_init(config_t* config){
                            &&(modules[module_i]->commands[command_i]->service_type & service->type)
                              &&(modules[module_i]->commands[command_i]->protocol_type & protocol->type)
                              &&(modules[module_i]->commands[command_i]->main_type & main->type)){
-                            modules[module_i]->commands[command_i]->parse_handler(json_service,service,config);
+                            if(modules[module_i]->commands[command_i]->parse_handler(json_service,service,config) == ERROR){
+                                conf_command_error();
+                            }
                         }
                     }
                 //}
@@ -213,7 +239,9 @@ int config_init(config_t* config){
 
                 for(int module_i = 0;modules[module_i]!=NULL;module_i++){
                     if(modules[module_i]->init_route_handler!=UNSET){
-                        modules[module_i]->init_route_handler(json_route,route,config);
+                        if(modules[module_i]->init_route_handler(json_route,route,config)==ERROR){
+                            conf_error();
+                        }
                     }
                     //if(modules[module_i]->type & route->part){
                         for(int command_i = 0;modules[module_i]->commands[command_i] != NULL;command_i++){
@@ -222,7 +250,9 @@ int config_init(config_t* config){
                                  &&(modules[module_i]->commands[command_i]->service_type & service->type)
                                  &&(modules[module_i]->commands[command_i]->protocol_type & protocol->type)
                                  &&(modules[module_i]->commands[command_i]->main_type & main->type)){
-                                modules[module_i]->commands[command_i]->parse_handler(json_route,route,config);
+                                if(modules[module_i]->commands[command_i]->parse_handler(json_route,route,config) ==ERROR){
+                                    conf_command_error();
+                                }
                             }
                         }
                     //}
@@ -234,7 +264,9 @@ int config_init(config_t* config){
 
     for(int module_i = 0;modules[module_i]!=NULL;module_i++){
         if(modules[module_i]->fin_conf_handler!=UNSET){
-            modules[module_i]->fin_conf_handler(json_main,main,config);
+            if(modules[module_i]->fin_conf_handler(json_main,main,config)==ERROR){
+                conf_error();
+            }
         }
     }
 
