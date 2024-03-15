@@ -81,8 +81,6 @@
 <!-- ABOUT THE PROJECT -->
 ## 关于项目
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 这是个基于C语言开发的，Nginx风格的网络服务器后端。这个项目目的是用于学习构建计算机网络，代码难度不高（个人认为）。包括了Nginx的简化版本的基础功能和架构，包括了`STL`库、定时器、内存管理...基础功能。
 
 代码阅读文档会在后续功能中推送...
@@ -113,17 +111,39 @@
 
 ### 安装
 
-1. 
-2. Clone the repo
+1. 克隆仓库
    ```sh
    git clone https://github.com/momentforever/SimpleLinuxWebServer.git
    ```
-3. Cmake
+2. Cmake
    ```sh
    cmake
    ```
-4. Edit config/config.json 
-5. Run
+3. 编辑config/config.json
+   ```json
+    {
+      "version": "slws",
+      "cycle": {
+        // 进程数
+        "process": 4,
+        // 进程连接数
+        "connection": 1024
+      },
+      "protocol": [
+        // 接收协议
+        {
+          "type": "http",
+          "service": [
+            {
+              "type": "server",
+              "listen": 8080
+            }
+          ]
+        }
+      ]
+    }
+   ```
+4. 运行
    ```
    ./SimpleWebServer
    ```
@@ -135,9 +155,9 @@
 <!-- USAGE EXAMPLES -->
 ## 用法
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
++ 访问 http://127.0.0.1:8080/
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_希望查看详细使用, 请访问 [功能](https://github.com/momentforever/SimpleLinuxWebServer/docs/usage.md)_
 
 <p align="right">(<a href="#readme-top">回到顶部</a>)</p>
 
