@@ -30,15 +30,15 @@
 <br />
 <div align="center">
   <a href="https://github.com/momentforever/SimpleLinuxWebServer">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="360" height="360">
   </a>
 
-<h3 align="center">Simple Web Server</h3>
+<h3 align="center">Simple Linux Web Server</h3>
 
   <p align="center">
     一个简单的基于C的网络服务器
     <br />
-    <a href="https://github.com/momentforever/SimpleLinuxWebServer"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/momentforever/SimpleLinuxWebServer/blob/main/docs/usage.md"><strong>使用文档 »</strong></a>
     <br />
     <br />
     <a href="https://github.com/momentforever/SimpleLinuxWebServer/issues">反馈Bug</a>
@@ -81,7 +81,7 @@
 <!-- ABOUT THE PROJECT -->
 ## 关于项目
 
-这是个基于C语言开发的，Nginx风格的网络服务器后端。这个项目目的是用于学习构建计算机网络，代码难度不高（个人认为）。包括了Nginx的简化版本的基础功能和架构，包括了`STL`库、定时器、内存管理...基础功能。
+这是个基于C语言开发的，Nginx风格的网络服务器后端。这个项目目的是用于学习构建计算机网络，代码难度不高（个人认为）。包括了Nginx的简化版本的基础功能和架构，包括了`STL`库、定时器、内存管理等基础功能。这是是个项目雏形，还有许多功能尚未完成，欢迎为这个项目添加功能和自己的想法。
 
 代码阅读文档会在后续功能中推送...
 
@@ -122,6 +122,7 @@
 3. 编辑config/config.json
    ```json
     {
+      // slws -> Simple Linux Web Server
       "version": "slws",
       "cycle": {
         // 进程数
@@ -157,7 +158,7 @@
 
 + 访问 http://127.0.0.1:8080/
 
-_希望查看详细使用, 请访问 [功能](https://github.com/momentforever/SimpleLinuxWebServer/docs/usage.md)_
+_希望查看详细使用, 请访问 [使用文档](https://github.com/momentforever/SimpleLinuxWebServer/blob/main/docs/usage.md)_
 
 <p align="right">(<a href="#readme-top">回到顶部</a>)</p>
 
