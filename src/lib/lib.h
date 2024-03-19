@@ -6,12 +6,15 @@
 #define SOCKET_LIB_H
 
 
+#include <linux/limits.h>
 #define _POSIX_C_SOURCE 200809L
 #include <time.h>
+#include <limits.h> // For PATH_MAX on some systems
 #include <bits/time.h>
 #include <string.h>
 #include <strings.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <unistd.h>
@@ -28,7 +31,6 @@
 #include <sys/prctl.h>
 
 #include "cJSON.h"
-
 
 #define ALL (-1)
 #define ETERNITY (-1)
@@ -62,6 +64,10 @@
 #define debug_assert()
 #define debugln()
 #endif
+
+extern const char g_version[];
+extern char g_conf_filepath[PATH_MAX];
+extern char g_work_dir[PATH_MAX];
 
 extern char **environ;
 

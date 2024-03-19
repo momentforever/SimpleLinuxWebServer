@@ -5,7 +5,7 @@
 #ifndef SOCKET_MEMORY_H
 #define SOCKET_MEMORY_H
 
-
+#include "lib.h"
 
 typedef struct memory_pool_node_s memory_pool_node_t;
 typedef struct memory_pool_s memory_pool_t;

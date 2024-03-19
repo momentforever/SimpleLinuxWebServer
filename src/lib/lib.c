@@ -3,6 +3,10 @@
 //
 #include "lib.h"
 
+const char g_version[] = "0.0.1";
+char g_conf_filepath[PATH_MAX];
+char g_work_dir[PATH_MAX];
+
 int g_argc;
 char **g_argv;
 

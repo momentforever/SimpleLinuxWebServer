@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
-project(SimpleWebServer C)
+project(SimpleLinuxWebServer C)
+
+enable_testing()
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O -g")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -DWITH_DEBUG")
 
+# ------------------- Link -------------------
 
 include_directories(
         src/common/
@@ -12,25 +17,18 @@ include_directories(
         src/protocol/http/
 
         src/auto/
-        test/
         )
 
-add_executable(SimpleWebServer src/main.c
-
+add_library(lib OBJECT
         src/lib/lib.c
         src/lib/cJSON.c
-
+        
         src/stl/rbtree.c
         src/stl/list.c
         src/stl/queue.c
+        )
 
-        src/common/clock.c
-        src/common/timer.c
-        src/common/memory.c
-
-        src/common/config.c
-        src/common/module.c
-
+add_library(core OBJECT
         src/core/cycle_module.c
         src/core/event_module.c
         src/core/listening_module.c
@@ -38,13 +36,38 @@ add_executable(SimpleWebServer src/main.c
         src/core/request_module.c
         src/core/session_module.c
 
-        src/protocol/http/self_httpd.c
+        src/common/clock.c
+        src/common/timer.c
+        src/common/memory.c
+        src/common/util.c
+        src/common/config.c
+        src/common/module.c
 
         src/auto/auto.c
 
-        test/test.c
+        src/protocol/http/self_httpd.c
         )
 
-target_link_libraries(SimpleWebServer rt)
-target_link_libraries(SimpleWebServer pthread)
-#target_link_libraries(SimpleWebServer yaml)
+
+# ------------------- Test -------------------
+
+add_executable(memory_test test/memory_test.c)
+
+target_link_libraries(memory_test PRIVATE lib core)
+
+add_test(NAME memory_test
+         COMMAND memory_test)
+
+
+# ------------------- Execute -------------------
+
+add_executable(slws src/main.c
+)
+
+target_link_libraries(slws PRIVATE lib core)
+
+target_link_libraries(slws PRIVATE rt)
+target_link_libraries(slws PRIVATE pthread)
+
+add_test(NAME slws
+         COMMAND slws -v)

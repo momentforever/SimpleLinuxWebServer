@@ -5,6 +5,7 @@
 #include "epoll_module.h"
 
 #include "cycle_module.h"
+#include "lib.h"
 #include "listening_module.h"
 
 int epoll_fd_create(cycle_t *cycle){
@@ -24,6 +25,7 @@ void epoll_add_listening(int *epoll_fd){
         listening = (listening_t*)node->value;
 
         listening->fd = socket(AF_INET,listening->fd_type,0);
+        debugln("listen fd: %d",listening->fd);
         //更改listen_fd属性
         //设置为非阻塞
         fcntl(listening->fd,F_SETFL,O_NONBLOCK);
@@ -57,7 +59,7 @@ void epoll_add_listening(int *epoll_fd){
 
     }
 }
-_Noreturn void master_cycle(){
+void master_cycle(){
     debugln("master cycle");
     while(1){
         // TODO 非阻塞，添加到定时器中
@@ -66,9 +68,10 @@ _Noreturn void master_cycle(){
         cycle_process_restart();
         if(g_process_type==WORKER)break;
     }
+    return;
 }
 
-_Noreturn void worker_cycle(){
+void worker_cycle(){
     debugln("worker cycle");
 
     struct epoll_event events[g_cycle->connection_n];
@@ -121,8 +124,10 @@ FIND_TIMER:
                     }
                     ev_conn->read->handler(ev_conn->read);
                     //TODO if ev_conn->ev->eof == 1 release
-                    release_connection(g_cycle,events[i].data.ptr);
-
+                    if(ev_conn->read->eof == ON){
+                        debugln("read finish, start release_connection.");
+                        release_connection(g_cycle,events[i].data.ptr);
+                    }
                 }
 //                else if(events[i].events & EPOLLOUT){
 //                    ev_conn->write->handler(ev_conn->write);
@@ -135,5 +140,6 @@ FIND_TIMER:
             }
         }
     }
+    return;
 }
 

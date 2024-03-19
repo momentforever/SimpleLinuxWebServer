@@ -7,6 +7,7 @@
 #include "common.h"
 #include "listening_module.h"
 #include "self_httpd.h"
+#include <stdio.h>
 
 int listen_parse_json(cJSON* data,config_node_t *cn, config_t* c);
 int init_service_listening(cJSON* data, config_node_t *cn, config_t* c);
@@ -120,10 +121,10 @@ void accept_tcp(connection_t *c){
     connection_t *new_conn;
     struct sockaddr clnt_addr;
     unsigned int clnt_addr_size;
-
+    debugln("fd: %d",c->fd);
     int conn_fd = accept(c->fd, &clnt_addr, &clnt_addr_size);
     if(conn_fd == -1){
-        perror("accept error.");
+        perror("accept error");
         return;
     }
 

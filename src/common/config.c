@@ -5,6 +5,8 @@
 #include "config.h"
 #include "lib.h"
 #include "auto.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void config_error_handler(const char* command){
     debugln("%s Config Init Error!",command);
@@ -286,10 +288,12 @@ config_t* config_create(){
     if(config->pool == NULL)return NULL;
 
     //read config
-    FILE *config_fd = fopen("../config.json","r");
+    FILE *config_fd = fopen(g_conf_filepath,"r");
 
     if(config_fd == NULL){
-        return NULL;
+        perror("config error");
+        exit(EXIT_FAILURE);
+        // return NULL;
     }
     //查找文件尾偏移
     fseek(config_fd,0,SEEK_END);

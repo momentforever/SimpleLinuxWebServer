@@ -3,8 +3,12 @@
 //
 
 #include "self_httpd.h"
+#include "lib.h"
+#include <linux/limits.h>
+#include <string.h>
 
 void request_handler(void* arg){
+    printf("start request_handler\n");
     int clnt_sock = *((int *)arg);
     char req_line[SMALL_BUF];
     FILE *clnt_read;
@@ -83,6 +87,7 @@ void request_handler(void* arg){
 }
 
 void send_data(FILE *fp,char *ct,char *file_name){
+    debugln("start send_data");
     char protocol[] = "HTTP/1.0 200 OK\r\n";
     char server[] = "Server:Linux Web Server \r\n";
     char cnt_len[] = "Content-length:2048 \r\n";
@@ -92,8 +97,8 @@ void send_data(FILE *fp,char *ct,char *file_name){
 
     sprintf(cnt_type,"Content-type:%s\r\n\r\n",ct);
 
-    char abs_path[] = "/root/project/simpleLinuxWebServer";
-    strcat(abs_path,file_name);
+    char abs_path[PATH_MAX] = "../resources";
+    strcat(abs_path, file_name);
     printf("send path:%s\n",abs_path);
 
     if(abs_path[strlen(abs_path)-1]=='/'){
