@@ -21,7 +21,7 @@ struct listening_s{
 
     struct sockaddr* serv_addr;
     // int serv_addr_size;
-
+    config_node_t* cn;
     connection_handler_pt handler;//do udp/tcp/http create connection
 
     unsigned listen:1;

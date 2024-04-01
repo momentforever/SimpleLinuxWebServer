@@ -7,6 +7,7 @@
 #include "cycle_module.h"
 #include "lib.h"
 #include "listening_module.h"
+#include <sys/epoll.h>
 
 int epoll_fd_create(cycle_t *cycle){
     return epoll_create(cycle->connection_n);
@@ -31,7 +32,7 @@ void epoll_add_listening(int *epoll_fd){
         fcntl(listening->fd,F_SETFL,O_NONBLOCK);
 
         if(bind(listening->fd,listening->serv_addr,sizeof(struct sockaddr))== -1){
-            perror("bind error, message: ");
+            perror("bind error");
             exit(1);
         }
 
@@ -53,7 +54,7 @@ void epoll_add_listening(int *epoll_fd){
 
         //将listen_df注册到刚刚创建的epoll中
         if(epoll_ctl(g_epoll_fd,EPOLL_CTL_ADD,conn->fd,&ev)==-1) {
-            perror("epoll_ctl error, message: ");
+            perror("epoll_ctl error");
             exit(1);
         }
 
@@ -122,11 +123,17 @@ FIND_TIMER:
                         debugln("read handler is NULL!");
                         continue;
                     }
-                    ev_conn->read->handler(ev_conn->read);
-                    //TODO if ev_conn->ev->eof == 1 release
+
                     if(ev_conn->read->eof == ON){
-                        debugln("read finish, start release_connection.");
+                        debugln("start write.");
+                        ev_conn->write->handler(ev_conn->write);
+                    }
+                    else if(ev_conn->write->eof == ON){
+                        debugln("write & read finish, start release_connection.");
                         release_connection(g_cycle,events[i].data.ptr);
+                    }else{
+                        debugln("start read.");
+                        ev_conn->read->handler(ev_conn->read);
                     }
                 }
 //                else if(events[i].events & EPOLLOUT){
@@ -142,4 +149,3 @@ FIND_TIMER:
     }
     return;
 }
-

@@ -6,7 +6,7 @@
 #include "cycle_module.h"
 #include "common.h"
 #include "listening_module.h"
-#include "self_httpd.h"
+#include "protocol_module.h"
 #include <stdio.h>
 
 int listen_parse_json(cJSON* data,config_node_t *cn, config_t* c);
@@ -53,7 +53,7 @@ int init_service_listening(cJSON* data, config_node_t *cn, config_t* c){
         cl->fd_type = SOCK_DGRAM;
         cl->handler = accept_udp;
     }
-
+    cl->cn = cn;
     cn->data[listening_module.service_index] = cl;
     return OK;
 }
@@ -110,24 +110,18 @@ list_t* listenings_create(config_t *c){
     return ls;
 }
 
-void write_handler(event_t *ev){
-    debugln("write_handler");
-    connection_t *con = ev->data;
-    request_handler((void*)&con->fd);
-}
-
 void accept_tcp(connection_t *c){
     struct epoll_event ev;
     connection_t *new_conn;
     struct sockaddr clnt_addr;
     unsigned int clnt_addr_size;
-    debugln("fd: %d",c->fd);
+    debugln("accept fd: %d",c->fd);
     int conn_fd = accept(c->fd, &clnt_addr, &clnt_addr_size);
     if(conn_fd == -1){
         perror("accept error");
         return;
     }
-
+    
     new_conn = get_free_connection(g_cycle);
     if(new_conn == NULL){
         debugln("no free connection!");
@@ -140,9 +134,10 @@ void accept_tcp(connection_t *c){
     new_conn->fd = conn_fd;
 
     // 根据协议分配不同handler
-    new_conn->read->handler = write_handler;
-    //new_conn->write->handler = NULL;
-
+    set_protocol_event_handler(new_conn);
+    new_conn->read->read = ON;
+    new_conn->write->write = ON;
+    
     ev.data.ptr = new_conn;
     // 边缘触发
     ev.events = EPOLLIN | EPOLLET;

@@ -10,5 +10,7 @@
 #include "timer.h"
 #include "module.h"
 #include "memory.h"
+#include "util.h"
+#include "log.h"
 
 #endif //SOCKET_COMMON_H

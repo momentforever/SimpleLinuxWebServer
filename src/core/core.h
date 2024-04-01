@@ -9,7 +9,6 @@
 #include "epoll_module.h"
 #include "event_module.h"
 #include "listening_module.h"
-#include "request_module.h"
-#include "session_module.h"
+#include "protocol_module.h"
 
 #endif //SOCKET_CORE_H

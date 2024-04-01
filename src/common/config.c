@@ -5,8 +5,7 @@
 #include "config.h"
 #include "lib.h"
 #include "auto.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "module.h"
 
 void config_error_handler(const char* command){
     debugln("%s Config Init Error!",command);

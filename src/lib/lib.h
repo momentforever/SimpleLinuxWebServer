@@ -48,6 +48,7 @@
 #define OK 0
 #define ERROR 1
 #define AGAIN 2
+#define IGNORE 3
 
 #define MASTER 0
 #define WORKER 1
@@ -88,6 +89,7 @@ extern timer_rbtree_t *g_event_timer_tree;
 typedef struct event_s event_t;
 typedef struct connection_s connection_t;
 typedef struct listening_s listening_t;
+typedef struct protocol_s protocol_t;
 
 typedef void (*connection_handler_pt)(connection_t *c);
 
@@ -107,6 +109,7 @@ extern char** environ;
 #define HTTPS           0b00001000
 #define GRPC            0b00010000
 #define ALL_PROTOCOL    0b11111111
+#define PROTOCOL_NUM    8
 
 #define UPSTREAM        0b0001
 #define SERVER          0b0010

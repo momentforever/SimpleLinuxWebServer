@@ -12,5 +12,9 @@ extern module_t *modules[];
 
 extern module_t cycle_module;
 extern module_t listening_module;
+extern module_t protocol_module;
+
+extern module_t http_request_module;
+
 
 #endif //SOCKET_AUTO_H

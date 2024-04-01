@@ -6,6 +6,8 @@
 module_t *modules[] = {
         &cycle_module,
         &listening_module,
+        [2]=&protocol_module,
+        &http_request_module,
         NULL,
 };
 
