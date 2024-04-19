@@ -34,11 +34,12 @@ int init_main_protocol(cJSON* data,config_node_t *cn, config_t* c){
     return OK;
 }
 
-int resigster_protocol_event_handler(event_handler_pt read_event_handler, 
-                        event_handler_pt write_event_handler,
-                        config_node_t *cn, 
-                        config_t* c,
-                        int type){
+int resigster_protocol_event_handler(event_handler_pt read_event_handler,
+                                     event_handler_pt write_event_handler,
+                                     connection_handler_pt event_pre_handler,
+                                     config_node_t *cn,
+                                     config_t* c,
+                                     int type){
     debugln("resgister part: %d, type: %d", cn->part, type);
     if(cn->part != PROTOCOL_MODULE){
         return ERROR;
@@ -48,7 +49,7 @@ int resigster_protocol_event_handler(event_handler_pt read_event_handler,
     if(pos >= PROTOCOL_NUM){
         return ERROR;
     }
-    debugln("register pos %d", pos);
+    cp->event_pre_handlers[pos] = event_pre_handler;
     cp->read_event_handlers[pos] = read_event_handler;
     cp->write_event_handlers[pos] = write_event_handler;
     return OK;
@@ -62,8 +63,12 @@ int set_protocol_event_handler(connection_t* conn){
     }
     protocol_t *cp = cn->parent->data[protocol_module.main_index];
     int pos = find_one_pos(cn->type);
-
+    cp->event_pre_handlers[pos](conn);
     conn->read->handler = cp->read_event_handlers[pos];
+    conn->read->read = 1;
+    conn->read->data = conn;
     conn->write->handler = cp->write_event_handlers[pos];
+    conn->write->write = 1;
+    conn->write->data = conn;
     return OK;
 }

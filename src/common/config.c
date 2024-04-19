@@ -6,6 +6,7 @@
 #include "lib.h"
 #include "auto.h"
 #include "module.h"
+#include <stdio.h>
 
 void config_error_handler(const char* command){
     debugln("%s Config Init Error!",command);
@@ -134,7 +135,7 @@ int route_translate(char* name){
 int config_init(config_t* config){
     //引擎解析 json
     cJSON* json_main = config->fmt;
-
+    
     config->root = config_node_add(config,NULL,main_translate(cJSON_GetStringValue(
             cJSON_GetObjectItem(json_main,"type"))));
 

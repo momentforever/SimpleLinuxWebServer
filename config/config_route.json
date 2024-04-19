@@ -1,0 +1,29 @@
+{
+  "version": "slws",
+  "cycle": {
+    "process": 1,
+    "connection": 1024
+  },
+  "protocol": [
+    {
+      "type": "http",
+      "service": [
+        {
+          "type": "server",
+          "listen": 8080,
+          "route": [
+            {
+              "type": "web",
+              "target": "/web",
+              "path": "./resources/"
+            },
+            {
+              "type": "echo",
+              "target": "/echo"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

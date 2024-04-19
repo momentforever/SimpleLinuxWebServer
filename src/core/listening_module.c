@@ -135,8 +135,6 @@ void accept_tcp(connection_t *c){
 
     // 根据协议分配不同handler
     set_protocol_event_handler(new_conn);
-    new_conn->read->read = ON;
-    new_conn->write->write = ON;
     
     ev.data.ptr = new_conn;
     // 边缘触发

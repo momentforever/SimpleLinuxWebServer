@@ -8,15 +8,17 @@
 #include "cycle_module.h"
 
 struct protocol_s{
+    connection_handler_pt event_pre_handlers[PROTOCOL_NUM];
     event_handler_pt read_event_handlers[PROTOCOL_NUM];
     event_handler_pt write_event_handlers[PROTOCOL_NUM];
 };
 
-int resigster_protocol_event_handler(event_handler_pt read_event_handler, 
-                        event_handler_pt write_event_handler,
-                        config_node_t *cn, 
-                        config_t* c,
-                        int type);
+int resigster_protocol_event_handler(event_handler_pt read_event_handler,
+                                     event_handler_pt write_event_handler,
+                                     connection_handler_pt event_pre_handler,
+                                     config_node_t *cn,
+                                     config_t* c,
+                                     int type);
 
 int set_protocol_event_handler(connection_t* conn);
 

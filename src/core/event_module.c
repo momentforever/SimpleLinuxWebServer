@@ -14,5 +14,6 @@ void event_init(event_t *ev){
     ev->eof = 0;
     ev->accept = 0;
     ev->handler = NULL;
+    ev->data = NULL;
 }
 
