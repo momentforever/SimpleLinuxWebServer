@@ -31,6 +31,7 @@
 #include <sys/prctl.h>
 
 #include "cJSON.h"
+#include "log.h"
 
 #define ALL (-1)
 #define ETERNITY (-1)
@@ -58,8 +59,8 @@
 
 #ifdef WITH_DEBUG
 #include <assert.h>
-#define debugln(...) printf(__VA_ARGS__); printf("\n")
-#define debug(...) printf(__VA_ARGS__)
+#define debugln(...) log_trace(__VA_ARGS__)
+#define debug(...) log_trace(__VA_ARGS__)
 #define debug_assert(...) assert(__VA_ARGS__)
 #else
 #define debug_assert()

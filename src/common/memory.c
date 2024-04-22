@@ -61,6 +61,10 @@ void* pmalloc(memory_pool_t *pool,size_t size){
     return ptr;
 }
 
+void pfree_void(void *pool){
+    pfree(pool);
+}
+
 void pfree(memory_pool_t *pool){
     if(pool->size == 0)return;
     memory_pool_node_t *node = pool->begin;

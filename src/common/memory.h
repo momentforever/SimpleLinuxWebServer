@@ -36,6 +36,7 @@ void* pmalloc(memory_pool_t *pool,size_t size);
 void pget(memory_pool_t *pool,void* ptr, memory_pool_node_free_pt free_handler);
 
 void pfree(memory_pool_t *pool);
+void pfree_void(void *pool);
 
 void memory_pool_delete(memory_pool_t* pool);
 

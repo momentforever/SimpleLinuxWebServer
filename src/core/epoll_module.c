@@ -81,7 +81,6 @@ void worker_cycle(){
     connection_t *ev_conn;
     timer_node_t *tn;
     int wait;
-    debugln("start socket!\n");
 
     for(;;){
         update_time();

@@ -13,12 +13,12 @@
           "listen": 8080,
           "route": [
             {
-              "type": "web",
+              "type": "location",
               "target": "/web",
               "path": "./resources/"
             },
             {
-              "type": "echo",
+              "type": "location",
               "target": "/echo"
             }
           ]

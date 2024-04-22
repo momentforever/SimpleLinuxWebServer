@@ -12,6 +12,7 @@
 #include "lib.h"
 #include "common.h"
 #include "auto.h"
+#include "log.h"
 #include <bits/getopt_core.h>
 #include <linux/limits.h>
 #include <stdio.h>

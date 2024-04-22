@@ -64,6 +64,10 @@ gen
 # Clion
 cmake-build-debug
 
+# VSCode
+
+.vscode
+
 # Custom
 .cache
 build
