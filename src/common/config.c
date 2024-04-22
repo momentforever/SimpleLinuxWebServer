@@ -65,7 +65,7 @@ config_node_t* config_node_add(config_t *config, config_node_t *parent,int type)
         node->part = SERVICE_MODULE;
         node->data= pmalloc(config->pool,service_module_num*sizeof(void*));
         memset(node->data,0,service_module_num*sizeof(void*));
-    }else if(parent->part == SERVICE_MODULE*sizeof(void*)){
+    }else if(parent->part == SERVICE_MODULE){
         node->part = ROUTE_MODULE;
         node->data= pmalloc(config->pool,route_module_num*sizeof(void*));
         memset(node->data,0,route_module_num*sizeof(void*));
